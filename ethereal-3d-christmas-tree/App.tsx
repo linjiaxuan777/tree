@@ -2,7 +2,7 @@
 import React, { Suspense, useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Float, ContactShadows } from '@react-three/drei';
-import { Volume2, VolumeX, Smartphone, X, Play } from 'lucide-react';
+import { Volume2, VolumeX, Play } from 'lucide-react';
 import TreeParticles from './components/TreeParticles';
 import { Decorations } from './components/Decorations';
 import Snow from './components/Snow';
@@ -11,7 +11,6 @@ import musicUrl from './music.mp3?url';
 const App: React.FC = () => {
   const [isStarted, setIsStarted] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [showQR, setShowQR] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 确保音频音量始终保持在较低水平
@@ -42,9 +41,6 @@ const App: React.FC = () => {
       }
     }
   };
-
-  const currentUrl = window.location.href;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUrl)}`;
 
   return (
     <div className="relative w-full h-screen bg-[#010205] overflow-hidden">
@@ -78,12 +74,12 @@ const App: React.FC = () => {
       {/* 3D Scene */}
       <div className={`absolute inset-0 z-0 transition-opacity duration-1000 ${isStarted ? 'opacity-100' : 'opacity-0'}`}>
         <Canvas shadows gl={{ antialias: true, alpha: true }}>
-          <PerspectiveCamera makeDefault position={[0, 1, 15]} fov={35} />
+          <PerspectiveCamera makeDefault position={[0, 1, 25]} fov={35} />
           <OrbitControls 
             enablePan={false} 
             maxPolarAngle={Math.PI / 1.7} 
-            minDistance={7} 
-            maxDistance={25}
+            minDistance={20} 
+            maxDistance={30}
             autoRotate
             autoRotateSpeed={0.5}
           />
@@ -117,20 +113,13 @@ const App: React.FC = () => {
       {isStarted && (
         <>
           <div className="absolute top-8 left-8 md:top-12 md:left-12 pointer-events-none z-10 animate-fade-in">
-            <h1 className="font-script text-white text-4xl md:text-6xl text-glow opacity-95">
+            <h1 className="font-script text-white text-6xl md:text-8xl text-glow opacity-95">
               Merry Christmas Yao
             </h1>
             <div className="mt-2 h-1 w-24 bg-gradient-to-r from-yellow-500 to-transparent opacity-60"></div>
           </div>
 
-          <div className="absolute bottom-8 right-8 z-20 flex flex-col gap-4">
-            <button 
-              onClick={() => setShowQR(true)}
-              className="p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all active:scale-95 shadow-lg"
-            >
-              <Smartphone size={24} />
-            </button>
-
+          <div className="absolute bottom-8 right-8 z-20">
             <button 
               onClick={toggleMute}
               className="p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all active:scale-95 shadow-lg"
@@ -139,22 +128,6 @@ const App: React.FC = () => {
             </button>
           </div>
         </>
-      )}
-
-      {/* QR Modal */}
-      {showQR && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white/10 border border-white/20 p-8 rounded-3xl backdrop-blur-xl flex flex-col items-center gap-6 shadow-2xl relative max-w-sm w-full">
-            <button onClick={() => setShowQR(false)} className="absolute top-4 right-4 text-white/60 hover:text-white">
-              <X size={24} />
-            </button>
-            <h2 className="text-white font-medium text-xl text-center">手机扫码预览</h2>
-            <div className="bg-white p-3 rounded-2xl">
-              <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48" />
-            </div>
-            <p className="text-white/70 text-center text-sm">请将音频命名为 music.mp3 并放在根目录<br/>扫码后在手机浏览器打开感受</p>
-          </div>
-        </div>
       )}
 
       <style>{`
