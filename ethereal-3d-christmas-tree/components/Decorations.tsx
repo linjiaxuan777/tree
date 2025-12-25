@@ -3,34 +3,27 @@ import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// Define R3F intrinsic elements as components to resolve JSX type errors
-const Group = 'group' as any;
-const Mesh = 'mesh' as any;
-const OctahedronGeometry = 'octahedronGeometry' as any;
-const MeshStandardMaterial = 'meshStandardMaterial' as any;
-const PointLight = 'pointLight' as any;
-const SphereGeometry = 'sphereGeometry' as any;
-
 const Star: React.FC = () => {
-  const ref = useRef<THREE.Group>(null!);
+  const ref = useRef<THREE.Group>(null);
   
   useFrame((state) => {
+    if (!ref.current) return;
     const time = state.clock.getElapsedTime();
     ref.current.rotation.y = time * 0.8;
   });
 
   return (
-    <Group ref={ref} position={[0, 2.3, 0]}>
-      <Mesh>
-        <OctahedronGeometry args={[0.5, 0]} />
-        <MeshStandardMaterial 
+    <group ref={ref} position={[0, 2.3, 0]}>
+      <mesh>
+        <octahedronGeometry args={[0.5, 0]} />
+        <meshStandardMaterial 
           color="#ffd700" 
           emissive="#ffaa00" 
           emissiveIntensity={6} 
         />
-      </Mesh>
-      <PointLight color="#ffcc00" intensity={15} distance={10} />
-    </Group>
+      </mesh>
+      <pointLight color="#ffcc00" intensity={15} distance={10} />
+    </group>
   );
 };
 
@@ -51,29 +44,29 @@ const Ornaments: React.FC = () => {
   }, [count]);
 
   return (
-    <Group>
+    <group>
       {ornaments.map((o, i) => (
-        <Group key={i} position={o.position as [number, number, number]}>
-          <Mesh>
-            <SphereGeometry args={[0.07, 16, 16]} />
-            <MeshStandardMaterial 
+        <group key={i} position={o.position as [number, number, number]}>
+          <mesh>
+            <sphereGeometry args={[0.07, 16, 16]} />
+            <meshStandardMaterial 
               color={o.color} 
               emissive={o.color} 
               emissiveIntensity={1.2} 
               roughness={0.1}
               metalness={0.8}
             />
-          </Mesh>
-          <PointLight color={o.color} intensity={0.2} distance={1} />
-        </Group>
+          </mesh>
+          <pointLight color={o.color} intensity={0.2} distance={1} />
+        </group>
       ))}
-    </Group>
+    </group>
   );
 };
 
 export const Decorations: React.FC = () => (
-  <Group position={[0, 0, 0]}>
+  <group position={[0, 0, 0]}>
     <Star />
     <Ornaments />
-  </Group>
+  </group>
 );

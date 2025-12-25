@@ -1,17 +1,6 @@
 import React, { useMemo } from 'react';
 import * as THREE from 'three';
 
-// Define R3F intrinsic elements as components to resolve JSX type errors
-const Group = 'group' as any;
-const Points = 'points' as any;
-const BufferGeometry = 'bufferGeometry' as any;
-const BufferAttribute = 'bufferAttribute' as any;
-const PointsMaterial = 'pointsMaterial' as any;
-const Mesh = 'mesh' as any;
-const CylinderGeometry = 'cylinderGeometry' as any;
-const MeshStandardMaterial = 'meshStandardMaterial' as any;
-const TubeGeometry = 'tubeGeometry' as any;
-
 const TreeParticles: React.FC = () => {
   const treeCount = 30000;
   const baseSnowCount = 8000;
@@ -80,61 +69,61 @@ const TreeParticles: React.FC = () => {
   }, []);
 
   return (
-    <Group>
+    <group>
       {/* Base Snow Pool */}
-      <Points>
-        <BufferGeometry>
-          <BufferAttribute
+      <points>
+        <bufferGeometry>
+          <bufferAttribute
             attach="attributes-position"
             count={baseSnowCount}
             array={baseSnow}
             itemSize={3}
           />
-        </BufferGeometry>
-        <PointsMaterial
+        </bufferGeometry>
+        <pointsMaterial
           size={0.045}
           color="#ffffff"
           transparent
           opacity={0.7}
           blending={THREE.AdditiveBlending}
         />
-      </Points>
+      </points>
 
       {/* Trunk */}
-      <Mesh position={[0, -4.1, 0]}>
-        <CylinderGeometry args={[0.2, 0.3, 1.2, 12]} />
-        <MeshStandardMaterial color="#1a0f08" roughness={1} />
-      </Mesh>
+      <mesh position={[0, -4.1, 0]}>
+        <cylinderGeometry args={[0.2, 0.3, 1.2, 12]} />
+        <meshStandardMaterial color="#1a0f08" roughness={1} />
+      </mesh>
 
       {/* Golden Ribbon Spiral */}
-      <Mesh>
-        <TubeGeometry args={[ribbonPath, 150, 0.012, 8, false]} />
-        <MeshStandardMaterial 
+      <mesh>
+        <tubeGeometry args={[ribbonPath, 150, 0.012, 8, false]} />
+        <meshStandardMaterial 
           color="#ffd700" 
           emissive="#ffaa00" 
           emissiveIntensity={1.5} 
           metalness={0.9} 
           roughness={0.1} 
         />
-      </Mesh>
+      </mesh>
 
       {/* Particle Foliage */}
-      <Points>
-        <BufferGeometry>
-          <BufferAttribute
+      <points>
+        <bufferGeometry>
+          <bufferAttribute
             attach="attributes-position"
             count={treeCount}
             array={particles.positions}
             itemSize={3}
           />
-          <BufferAttribute
+          <bufferAttribute
             attach="attributes-color"
             count={treeCount}
             array={particles.colors}
             itemSize={3}
           />
-        </BufferGeometry>
-        <PointsMaterial
+        </bufferGeometry>
+        <pointsMaterial
           size={0.035}
           vertexColors
           transparent
@@ -142,8 +131,8 @@ const TreeParticles: React.FC = () => {
           sizeAttenuation
           blending={THREE.AdditiveBlending}
         />
-      </Points>
-    </Group>
+      </points>
+    </group>
   );
 };
 

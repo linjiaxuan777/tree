@@ -3,8 +3,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { HolidayGreeting } from "../types";
 
 export const generateHolidayGreeting = async (prompt?: string): Promise<HolidayGreeting> => {
-  // Fix: Initialize the client using process.env.API_KEY directly as per the guidelines.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  // Fix: Initialize the client using import.meta.env.VITE_API_KEY for Vite projects.
+  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
   
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',

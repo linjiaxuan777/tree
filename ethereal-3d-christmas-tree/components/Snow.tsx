@@ -3,15 +3,9 @@ import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// Define R3F intrinsic elements as components to resolve JSX type errors
-const Points = 'points' as any;
-const BufferGeometry = 'bufferGeometry' as any;
-const BufferAttribute = 'bufferAttribute' as any;
-const PointsMaterial = 'pointsMaterial' as any;
-
 const Snow: React.FC = () => {
   const count = 6000;
-  const meshRef = useRef<THREE.Points>(null!);
+  const meshRef = useRef<THREE.Points>(null);
   
   const particles = useMemo(() => {
     const pos = new Float32Array(count * 3);
@@ -26,6 +20,7 @@ const Snow: React.FC = () => {
   }, [count]);
 
   useFrame(() => {
+    if (!meshRef.current) return;
     const positions = meshRef.current.geometry.getAttribute('position');
     for (let i = 0; i < count; i++) {
       let y = positions.getY(i);
@@ -41,23 +36,23 @@ const Snow: React.FC = () => {
   });
 
   return (
-    <Points ref={meshRef}>
-      <BufferGeometry>
-        <BufferAttribute
+    <points ref={meshRef}>
+      <bufferGeometry>
+        <bufferAttribute
           attach="attributes-position"
           count={count}
           array={particles.pos}
           itemSize={3}
         />
-      </BufferGeometry>
-      <PointsMaterial 
+      </bufferGeometry>
+      <pointsMaterial 
         size={0.1} 
         color="white" 
         transparent 
         opacity={0.6} 
         blending={THREE.AdditiveBlending}
       />
-    </Points>
+    </points>
   );
 };
 

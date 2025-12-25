@@ -3,14 +3,10 @@ import React, { Suspense, useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, Float, ContactShadows } from '@react-three/drei';
 import { Volume2, VolumeX, Smartphone, X, Play } from 'lucide-react';
-import TreeParticles from './components/TreeParticles.tsx';
-import { Decorations } from './components/Decorations.tsx';
-import Snow from './components/Snow.tsx';
-
-// Define R3F intrinsic elements as components
-const AmbientLight = 'ambientLight' as any;
-const SpotLight = 'spotLight' as any;
-const PointLight = 'pointLight' as any;
+import TreeParticles from './components/TreeParticles';
+import { Decorations } from './components/Decorations';
+import Snow from './components/Snow';
+import musicUrl from './music.mp3?url';
 
 const App: React.FC = () => {
   const [isStarted, setIsStarted] = useState(false);
@@ -29,7 +25,7 @@ const App: React.FC = () => {
     setIsStarted(true);
     if (audioRef.current) {
       audioRef.current.volume = 0.3; // 再次确认音量
-      audioRef.current.play().catch(e => {
+      audioRef.current.play().catch((e: Error) => {
         console.error("音频播放失败，请检查文件是否存在于根目录并命名为 music.mp3", e);
       });
     }
@@ -54,7 +50,7 @@ const App: React.FC = () => {
     <div className="relative w-full h-screen bg-[#010205] overflow-hidden">
       {/* 使用你提供的音频文件，确保文件名为 music.mp3 并放在根目录 */}
       <audio ref={audioRef} loop preload="auto">
-        <source src="./music.mp3" type="audio/mpeg" />
+        <source src={musicUrl} type="audio/mpeg" />
         您的浏览器不支持音频播放。
       </audio>
 
@@ -93,11 +89,11 @@ const App: React.FC = () => {
           />
           
           <Suspense fallback={null}>
-            <AmbientLight intensity={0.4} />
-            <SpotLight position={[10, 20, 10]} angle={0.2} penumbra={1} intensity={3} castShadow />
-            <PointLight position={[-10, 5, -5]} intensity={1.5} color="#ffffff" />
-            <PointLight position={[5, 2, -10]} intensity={2} color="#4477ff" />
-            <PointLight position={[0, -4, 0]} intensity={1.2} color="#ffcc00" distance={10} />
+            <ambientLight intensity={0.4} />
+            <spotLight position={[10, 20, 10]} angle={0.2} penumbra={1} intensity={3} castShadow />
+            <pointLight position={[-10, 5, -5]} intensity={1.5} color="#ffffff" />
+            <pointLight position={[5, 2, -10]} intensity={2} color="#4477ff" />
+            <pointLight position={[0, -4, 0]} intensity={1.2} color="#ffcc00" distance={10} />
             
             <Float speed={0.5} rotationIntensity={0.05} floatIntensity={0.05}>
               <TreeParticles />
