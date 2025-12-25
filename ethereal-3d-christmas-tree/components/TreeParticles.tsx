@@ -75,9 +75,7 @@ const TreeParticles: React.FC = () => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={baseSnowCount}
-            array={baseSnow}
-            itemSize={3}
+            args={[baseSnow, 3]}
           />
         </bufferGeometry>
         <pointsMaterial
@@ -112,15 +110,11 @@ const TreeParticles: React.FC = () => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={treeCount}
-            array={particles.positions}
-            itemSize={3}
+            args={[particles.positions, 3]}
           />
           <bufferAttribute
             attach="attributes-color"
-            count={treeCount}
-            array={particles.colors}
-            itemSize={3}
+            args={[particles.colors, 3]}
           />
         </bufferGeometry>
         <pointsMaterial

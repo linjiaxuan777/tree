@@ -24,7 +24,11 @@ export const generateHolidayGreeting = async (prompt?: string): Promise<HolidayG
   });
 
   try {
-    return JSON.parse(response.text.trim());
+    const text = response.text;
+    if (!text) {
+      throw new Error('Response text is undefined');
+    }
+    return JSON.parse(text.trim());
   } catch (error) {
     return {
       title: "Merry Christmas",

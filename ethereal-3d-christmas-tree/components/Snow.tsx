@@ -40,9 +40,7 @@ const Snow: React.FC = () => {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={count}
-          array={particles.pos}
-          itemSize={3}
+          args={[particles.pos, 3]}
         />
       </bufferGeometry>
       <pointsMaterial 
